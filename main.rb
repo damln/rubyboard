@@ -20,6 +20,11 @@ require 'bundler/setup'
 require "midi"
 dynamic_load
 #===========================
+#  Global variables are bad but this is a script not a production critical app...
+# This array is used to map chors (multiple notes played at once)
+$global_buffer = []
+# in seconds:
+
 puts "Start MIDI"
 
 inputs = UniMIDI::Input.all
@@ -45,39 +50,44 @@ inputs.each do |input|
   # input = UniMIDI::Input.all[0]
   MIDI.using(input) do
     receive :aftertouch do |message|
-      puts("++++++++++ aftertouch")
+      puts("||||||||||||||||||||||||||||||||| aftertouch")
       # puts(message)
     end
+
     receive :channel_aftertouch do |message|
-      puts("++++++++++ channel_aftertouch")
+      puts("||||||||||||||||||||||||||||||||| channel_aftertouch")
       # puts(message)
     end
+
     receive :control_change do |message|
-      puts("++++++++++ control_change:")
+      puts("||||||||||||||||||||||||||||||||| control_change:")
       puts("---------> control_change, message.data:    #{message.data}")
       puts("---------> control_change, message.channel: #{message.channel}")
       puts("---------> control_change, message.name:    #{message.name}")
       dynamic_load
       Keyboard.new.run(message)
     end
-    receive :note do |message|
-      puts("++++++++++ note:")
-      puts("---------> note, message.channel:   #{message.channel}")
-      puts("---------> note, message.note:      #{message.note}")
-      puts("---------> note, message.note_name: #{message.note_name}")
-      puts("---------> note, message.velocity:  #{message.velocity}")
-      puts("---------> note, message.octave:    #{message.octave}")
-      puts("---------> note, message.status:    #{message.status}")
 
+    receive :note do |message|
       # Velocity 0 is when note is "off":
       if message.velocity > 0
+        puts("||||||||||||||||||||||||||||||||| note:")
+        puts("---------> note, message.channel:   #{message.channel}")
+        puts("---------> note, message.note:      #{message.note}")
+        puts("---------> note, message.note_name: #{message.note_name}")
+        puts("---------> note, message.velocity:  #{message.velocity}")
+        puts("---------> note, message.octave:    #{message.octave}")
+        puts("---------> note, message.status:    #{message.status}")
         dynamic_load
         Keyboard.new.run(message)
+      else
+        # Reset buffer on off and big:
+        # $global_buffer = [] if $global_buffer.size > 5
       end
     end
 
     receive :off do |message|
-      puts("++++++++++ off:")
+      puts("||||||||||||||||||||||||||||||||| off:")
       puts("---------> off, message.channel:   #{message.channel}")
       puts("---------> off, message.note:      #{message.note}")
       puts("---------> off, message.note_name: #{message.note_name}")
@@ -93,17 +103,19 @@ inputs.each do |input|
     #   puts(message)
     # end
     receive :pitch_bend do |message|
-      puts("++++++++++ pitch_bend:")
+      puts("||||||||||||||||||||||||||||||||| pitch_bend:")
       puts("---------> pitch_bend, message.data:    #{message.data}")
       puts("---------> pitch_bend, message.channel: #{message.channel}")
       # puts(message)
     end
+
     receive :polyphonic_aftertouch do |message|
-      puts("++++++++++ polyphonic_aftertouch")
+      puts("||||||||||||||||||||||||||||||||| polyphonic_aftertouch")
       # puts(message)
     end
+
     receive :program_change do |message|
-      puts("++++++++++ program_change")
+      puts("||||||||||||||||||||||||||||||||| program_change")
       # puts(message)
     end
 
