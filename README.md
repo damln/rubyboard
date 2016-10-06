@@ -27,3 +27,7 @@ RUBY_ENV=debug bundle exec ruby ./main.rb
 - `main.rb` contains the loop used to catch MIDI events.
 - `keyboard.rb` contains the code to handle the mapping between notes and commands.
 - `orders.rb` contains the commands you can execute. Feel free to map new things and be creative here.
+
+# Slides
+
+https://speakerdeck.com/damln/re-think-your-workflow-with-a-piano
