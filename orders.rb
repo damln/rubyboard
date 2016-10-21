@@ -24,6 +24,16 @@ class Orders
     system "osascript -e '#{cmd}'"
   end
 
+  def next_slide
+    cmd = "tell application \"Keynote\"\n show next\nend tell"
+    system "osascript -e '#{cmd}'"
+  end
+
+  def previous_slide
+    cmd = "tell application \"Keynote\"\n show previous\nend tell"
+    system "osascript -e '#{cmd}'"
+  end
+
   def deploy_prod_fast
     dir = self.working_directory_by_program("rails")
     cmd = "bundle exec rake deploy:prod:fast"

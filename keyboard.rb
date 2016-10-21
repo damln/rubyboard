@@ -46,9 +46,12 @@ class Keyboard
     finder_home: %w(F),
     finder_downloads: %w(G),
 
-    gulp_build: %w(C#),
-    deploy_test_fast: %w(EB),
-    deploy_prod_fast: %w(F#),
+    # gulp_build: %w(C#),
+    # deploy_test_fast: %w(EB),
+    # deploy_prod_fast: %w(F#),
+
+    next_slide: %w(C#),
+    previous_slide: %w(EB),
 
     # Some CHORDS:
     test_chord_1: CHORDS["CM"],
